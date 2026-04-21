@@ -34,26 +34,28 @@
       border: 1px solid #ccc;
       border-radius: 4px;
     }
-    button {
-      margin-top: 20px;
-      width: 100%;
-      padding: 10px;
-      background: #0078d7;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #005fa3;
-    }
     #result {
       margin-top: 20px;
       text-align: center;
-      font-size: 18px;
+      font-size: 20px;
       font-weight: bold;
-      color: #0078d7;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      opacity: 0;
+    }
+    #result.show {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+    @media (max-width: 600px) {
+      body {
+        margin: 10px;
+      }
+      form {
+        padding: 15px;
+      }
+      h1 {
+        font-size: 22px;
+      }
     }
   </style>
 </head>
@@ -97,28 +99,65 @@
       <option value="automatic">Automatic</option>
     </select>
 
-    <label for="brand">Brand Popularity:</label>
-    <select id="brand">
-      <option value="popular">Popular</option>
-      <option value="average">Average</option>
-      <option value="low">Low</option>
+    <label for="brand">Brand:</label>
+    <select id="brand" onchange="updateModels()">
+      <option value="">Select Brand</option>
+      <option value="toyota">Toyota</option>
+      <option value="maruti">Maruti</option>
+      <option value="honda">Honda</option>
+      <option value="hyundai">Hyundai</option>
     </select>
 
-    <button type="button" onclick="evaluateCar()">Evaluate</button>
+    <label for="model">Model:</label>
+    <select id="model">
+      <option value="">Select Model</option>
+    </select>
   </form>
 
   <div id="result"></div>
 
   <script>
+    // Brand → Model cascading dropdown
+    function updateModels() {
+      let brand = document.getElementById('brand').value;
+      let modelSelect = document.getElementById('model');
+      modelSelect.innerHTML = "";
+
+      let models = {
+        "toyota": ["Corolla", "Innova", "Fortuner"],
+        "maruti": ["Swift", "Baleno", "Dzire"],
+        "honda": ["City", "Civic", "Amaze"],
+        "hyundai": ["i20", "Creta", "Verna"]
+      };
+
+      if (models[brand]) {
+        models[brand].forEach(m => {
+          let opt = document.createElement("option");
+          opt.value = m.toLowerCase();
+          opt.text = m;
+          modelSelect.add(opt);
+        });
+      } else {
+        let opt = document.createElement("option");
+        opt.value = "";
+        opt.text = "Select Model";
+        modelSelect.add(opt);
+      }
+      evaluateCar(); // auto-update when brand changes
+    }
+
+    // Main valuation function
     function evaluateCar() {
-      let price = parseFloat(document.getElementById('price').value);
-      let age = parseInt(document.getElementById('age').value);
-      let mileage = parseInt(document.getElementById('mileage').value);
-      let owners = parseInt(document.getElementById('owners').value);
+      let price = parseFloat(document.getElementById('price').value) || 0;
+      let age = parseInt(document.getElementById('age').value) || 0;
+      let mileage = parseInt(document.getElementById('mileage').value) || 0;
+      let owners = parseInt(document.getElementById('owners').value) || 1;
       let condition = document.getElementById('condition').value;
       let fuel = document.getElementById('fuel').value;
       let transmission = document.getElementById('transmission').value;
       let brand = document.getElementById('brand').value;
+
+      if (!price || !age) return; // wait until essential inputs are filled
 
       // Step 1: Depreciation
       let depreciationRates = [0.20, 0.15, 0.10];
@@ -144,19 +183,34 @@
 
       // Step 4: Condition
       let conditionFactors = { "excellent": 1.0, "good": 0.9, "fair": 0.8, "poor": 0.7 };
-      value *= conditionFactors[condition];
+      if (conditionFactors[condition]) value *= conditionFactors[condition];
 
       // Step 5: Market Demand
       let fuelFactors = { "petrol": 1.0, "diesel": 0.85, "electric": 1.1 };
       let transmissionFactors = { "manual": 1.0, "automatic": 1.1 };
-      let brandFactors = { "popular": 1.05, "average": 1.0, "low": 0.9 };
+      let brandFactors = { "toyota": 1.05, "maruti": 1.0, "honda": 1.02, "hyundai": 0.95 };
 
-      value *= fuelFactors[fuel];
-      value *= transmissionFactors[transmission];
-      value *= brandFactors[brand];
+      if (fuelFactors[fuel]) value *= fuelFactors[fuel];
+      if (transmissionFactors[transmission]) value *= transmissionFactors[transmission];
+      if (brandFactors[brand]) value *= brandFactors[brand];
 
-      document.getElementById('result').innerText = "Estimated Value: ₹" + Math.round(value).toLocaleString();
+      // Display result with animation + color coding
+      let resultEl = document.getElementById('result');
+      resultEl.classList.add('show');
+      if (value > price * 0.5) {
+        resultEl.style.color = "green";
+      } else if (value > price * 0.3) {
+        resultEl.style.color = "orange";
+      } else {
+        resultEl.style.color = "red";
+      }
+      resultEl.innerText = "Estimated Value: ₹" + Math.round(value).toLocaleString();
     }
+
+    // Real-time updates
+    document.querySelectorAll('#carForm input, #carForm select').forEach(el => {
+      el.addEventListener('input', evaluateCar);
+    });
   </script>
 </body>
 </html>
