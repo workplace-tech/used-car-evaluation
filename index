@@ -1,162 +1,230 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Used Car Evaluation App</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 40px;
-      background-color: #f4f4f9;
-    }
-    h1 {
-      text-align: center;
-      color: #333;
-    }
-    form {
-      max-width: 600px;
-      margin: auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-    }
-    input, select {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    button {
-      margin-top: 20px;
-      width: 100%;
-      padding: 10px;
-      background: #0078d7;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #005fa3;
-    }
-    #result {
-      margin-top: 20px;
-      text-align: center;
-      font-size: 18px;
-      font-weight: bold;
-      color: #0078d7;
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Airtel Retailer Earning Calculator HP</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{font-family:Poppins;background:#f5f6fa;margin:0}
+header{background:#d32f2f;color:#fff;padding:14px;text-align:center;font-weight:700}
+.container{max-width:950px;margin:12px auto 80px;padding:12px}
+.card{background:#fff;border-radius:12px;box-shadow:0 4px 14px rgba(0,0,0,.08);margin-bottom:12px}
+.card-header{background:#d32f2f;color:#fff;padding:10px 12px;font-weight:700}
+.card-body{padding:12px}
+.row{display:grid;grid-template-columns:50% 25% 25%;gap:10px;align-items:center;padding:6px 0}
+input{width:100%;padding:8px;border-radius:8px;border:1px solid #ccc;text-align:right}
+.result{text-align:right;font-weight:700;color:#d32f2f}
+.summary{font-size:16px;font-weight:800}
+.controls{display:flex;gap:10px;justify-content:center;margin-top:15px}
+button{border:none;border-radius:10px;padding:10px 16px;font-weight:700;color:#fff;cursor:pointer}
+.telegram{background:#0088cc}
+.whatsapp{background:#25D366}
+</style>
 </head>
+
 <body>
-  <h1>Used Car Evaluation</h1>
-  <form id="carForm">
-    <label for="price">Original Price (₹):</label>
-    <input type="number" id="price" required>
+<header>Airtel Retailer – Earning Calculator HP</header>
 
-    <label for="age">Age (years):</label>
-    <input type="number" id="age" required>
+<div class="container">
 
-    <label for="mileage">Mileage (km):</label>
-    <input type="number" id="mileage" required>
+<!-- LAPU -->
+<div class="card">
+<div class="card-header">LAPU</div>
+<div class="card-body">
+<div class="row">
+<div>LAPU Tertiary</div>
+<input id="tertiary" type="number" oninput="calc()">
+<div class="result" id="lapuVal">₹0.00</div>
+</div>
+</div>
+</div>
 
-    <label for="owners">Number of Owners:</label>
-    <select id="owners">
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3+</option>
-    </select>
+<!-- MNP -->
+<div class="card">
+<div class="card-header">MNP</div>
+<div class="card-body">
+<div class="row">
+<div>MNP Count</div>
+<input id="mnp" type="number" oninput="calc()">
+<div class="result" id="mnpVal">₹0.00</div>
+</div>
+<div class="row">
+<div>MNP Days</div>
+<input id="mnpDays" type="number" oninput="calc()">
+<div class="result" id="mnpDaysVal">₹0.00</div>
+</div>
+</div>
+</div>
 
-    <label for="condition">Condition:</label>
-    <select id="condition">
-      <option value="excellent">Excellent</option>
-      <option value="good">Good</option>
-      <option value="fair">Fair</option>
-      <option value="poor">Poor</option>
-    </select>
+<!-- WIFI -->
+<div class="card">
+<div class="card-header">WiFi</div>
+<div class="card-body">
+<div class="row">
+<div>WiFi Days</div>
+<input id="wifiDays" type="number" oninput="calc()">
+<div class="result" id="wifiDaysVal">₹0.00</div>
+</div>
+<div class="row">
+<div>WiFi Lead</div>
+<input id="wifiLead" type="number" oninput="calc()">
+<div class="result" id="wifiLeadVal">₹0.00</div>
+</div>
+</div>
+</div>
 
-    <label for="fuel">Fuel Type:</label>
-    <select id="fuel">
-      <option value="petrol">Petrol</option>
-      <option value="diesel">Diesel</option>
-      <option value="electric">Electric</option>
-    </select>
+<!-- OTHER -->
+<div class="card">
+<div class="card-header">Other Components</div>
+<div class="card-body">
 
-    <label for="transmission">Transmission:</label>
-    <select id="transmission">
-      <option value="manual">Manual</option>
-      <option value="automatic">Automatic</option>
-    </select>
+<div class="row">
+<div>SIM Swap Count</div>
+<input id="simSwap" type="number" oninput="calc()">
+<div class="result" id="simSwapVal">₹0.00</div>
+</div>
 
-    <label for="brand">Brand Popularity:</label>
-    <select id="brand">
-      <option value="popular">Popular</option>
-      <option value="average">Average</option>
-      <option value="low">Low</option>
-    </select>
+<div class="row">
+<div>Upgrade 349</div>
+<input id="upgrade" type="number" oninput="calc()">
+<div class="result" id="upgradeVal">₹0.00</div>
+</div>
 
-    <button type="button" onclick="evaluateCar()">Evaluate</button>
-  </form>
+<div class="row">
+<div>STAR Winback</div>
+<input id="star" type="number" oninput="calc()">
+<div class="result" id="starVal">₹0.00</div>
+</div>
 
-  <div id="result"></div>
+<div class="row">
+<div>Payment Bank AC</div>
+<input id="pba" type="number" oninput="calc()">
+<div class="result" id="pbaVal">₹0.00</div>
+</div>
 
-  <script>
-    function evaluateCar() {
-      let price = parseFloat(document.getElementById('price').value);
-      let age = parseInt(document.getElementById('age').value);
-      let mileage = parseInt(document.getElementById('mileage').value);
-      let owners = parseInt(document.getElementById('owners').value);
-      let condition = document.getElementById('condition').value;
-      let fuel = document.getElementById('fuel').value;
-      let transmission = document.getElementById('transmission').value;
-      let brand = document.getElementById('brand').value;
+<div class="row">
+<div>GAD</div>
+<input id="gad" type="number" oninput="calc()">
+<div class="result" id="gadVal">₹0.00</div>
+</div>
 
-      // Step 1: Depreciation
-      let depreciationRates = [0.20, 0.15, 0.10];
-      let value = price;
-      for (let year = 1; year <= age; year++) {
-        if (year <= depreciationRates.length) {
-          value *= (1 - depreciationRates[year - 1]);
-        } else {
-          value *= (1 - 0.07);
-        }
-      }
+<div class="row">
+<div>Free Demo Plan</div>
+<input id="freeDemo" type="number" oninput="calc()">
+<div class="result" id="freeDemoVal">₹0.00</div>
+</div>
 
-      // Step 2: Mileage Adjustment
-      let expectedMileage = age * 15000;
-      let mileageDiff = mileage - expectedMileage;
-      if (mileageDiff > 0) {
-        value *= (1 - (mileageDiff / 100000));
-      }
+</div>
+</div>
 
-      // Step 3: Ownership
-      let ownershipFactor = owners === 1 ? 1.0 : owners === 2 ? 0.9 : 0.8;
-      value *= ownershipFactor;
+<!-- TOTAL -->
+<div class="card">
+<div class="card-body">
 
-      // Step 4: Condition
-      let conditionFactors = { "excellent": 1.0, "good": 0.9, "fair": 0.8, "poor": 0.7 };
-      value *= conditionFactors[condition];
+<div class="row summary">
+<div>Total Incentive</div><div></div>
+<div class="result" id="total">₹0.00</div>
+</div>
 
-      // Step 5: Market Demand
-      let fuelFactors = { "petrol": 1.0, "diesel": 0.85, "electric": 1.1 };
-      let transmissionFactors = { "manual": 1.0, "automatic": 1.1 };
-      let brandFactors = { "popular": 1.05, "average": 1.0, "low": 0.9 };
+<div class="row summary">
+<div>You Invested</div><div></div>
+<div class="result" id="invested">₹0.00</div>
+</div>
 
-      value *= fuelFactors[fuel];
-      value *= transmissionFactors[transmission];
-      value *= brandFactors[brand];
+<div class="row summary">
+<div>Return on Investment</div><div></div>
+<div class="result" id="roi">0.00%</div>
+</div>
 
-      document.getElementById('result').innerText = "Estimated Value: ₹" + Math.round(value).toLocaleString();
-    }
-  </script>
+<div class="controls">
+<button class="telegram" onclick="shareTelegram()">Share Telegram</button>
+<button class="whatsapp" onclick="shareWhatsApp()">Share WhatsApp</button>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<script>
+const f=n=>"₹"+n.toLocaleString('en-IN',{minimumFractionDigits:2});
+const v=id=>+document.getElementById(id).value||0;
+
+function calc(){
+
+const tertiary=v('tertiary');
+
+const lapu=tertiary*0.03;
+const mnp=v('mnp')*345;
+const mnpDays=((tertiary*0.014)/30)*v('mnpDays');   // UPDATED TO 1.4%
+const wifiDays=((tertiary*0.015)/30)*v('wifiDays');
+const wifiLead=v('wifiLead')*400;
+const simSwap=v('simSwap')*100;
+const upgrade=v('upgrade')*12;
+const star=v('star')*1.8;
+const pba=v('pba')*45;
+const gad=v('gad')*135;
+const freeDemo=v('freeDemo')*349;
+
+lapuVal.innerText=f(lapu);
+mnpVal.innerText=f(mnp);
+mnpDaysVal.innerText=f(mnpDays);
+wifiDaysVal.innerText=f(wifiDays);
+wifiLeadVal.innerText=f(wifiLead);
+simSwapVal.innerText=f(simSwap);
+upgradeVal.innerText=f(upgrade);
+starVal.innerText=f(star);
+pbaVal.innerText=f(pba);
+gadVal.innerText=f(gad);
+freeDemoVal.innerText=f(freeDemo);
+
+const total=lapu+mnp+mnpDays+wifiDays+wifiLead+
+simSwap+upgrade+star+pba+gad+freeDemo;
+
+document.getElementById('total').innerText=f(total);
+
+const invested=tertiary/30;
+document.getElementById('invested').innerText=f(invested);
+
+const roi=invested>0?(total/invested)*100:0;
+document.getElementById('roi').innerText=roi.toFixed(2)+"%";
+}
+
+function buildMessage(){
+return `📊 Airtel Retailer – Earning Calculator HP
+
+LAPU Incentive: ${lapuVal.innerText}
+MNP: ${mnpVal.innerText}
+MNP Days: ${mnpDaysVal.innerText}
+WiFi Days: ${wifiDaysVal.innerText}
+WiFi Lead: ${wifiLeadVal.innerText}
+SIM Swap: ${simSwapVal.innerText}
+Upgrade 349: ${upgradeVal.innerText}
+STAR Winback: ${starVal.innerText}
+Payment Bank AC: ${pbaVal.innerText}
+GAD: ${gadVal.innerText}
+Free Demo Plan: ${freeDemoVal.innerText}
+
+💰 Total Incentive: ${total.innerText}
+💼 You Invested: ${invested.innerText}
+📈 ROI: ${roi.innerText}`;
+}
+
+function shareWhatsApp(){
+let url="https://wa.me/?text="+encodeURIComponent(buildMessage());
+window.open(url,"_blank");
+}
+
+function shareTelegram(){
+let url="https://t.me/share/url?url=&text="+encodeURIComponent(buildMessage());
+window.open(url,"_blank");
+}
+
+calc();
+</script>
+
 </body>
 </html>
