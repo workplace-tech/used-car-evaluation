@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Used Car Evaluation App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f4f4f9;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    form {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      background: #0078d7;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #005fa3;
+    }
+    #result {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      color: #0078d7;
+    }
+  </style>
+</head>
+<body>
+  <h1>Used Car Evaluation</h1>
+  <form id="carForm">
+    <label for="price">Original Price (₹):</label>
+    <input type="number" id="price" required>
+
+    <label for="age">Age (years):</label>
+    <input type="number" id="age" required>
+
+    <label for="mileage">Mileage (km):</label>
+    <input type="number" id="mileage" required>
+
+    <label for="owners">Number of Owners:</label>
+    <select id="owners">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3+</option>
+    </select>
+
+    <label for="condition">Condition:</label>
+    <select id="condition">
+      <option value="excellent">Excellent</option>
+      <option value="good">Good</option>
+      <option value="fair">Fair</option>
+      <option value="poor">Poor</option>
+    </select>
+
+    <label for="fuel">Fuel Type:</label>
+    <select id="fuel">
+      <option value="petrol">Petrol</option>
+      <option value="diesel">Diesel</option>
+      <option value="electric">Electric</option>
+    </select>
+
+    <label for="transmission">Transmission:</label>
+    <select id="transmission">
+      <option value="manual">Manual</option>
+      <option value="automatic">Automatic</option>
+    </select>
+
+    <label for="brand">Brand Popularity:</label>
+    <select id="brand">
+      <option value="popular">Popular</option>
+      <option value="average">Average</option>
+      <option value="low">Low</option>
+    </select>
+
+    <button type="button" onclick="evaluateCar()">Evaluate</button>
+  </form>
+
+  <div id="result"></div>
+
+  <script>
+    function evaluateCar() {
+      let price = parseFloat(document.getElementById('price').value);
+      let age = parseInt(document.getElementById('age').value);
+      let mileage = parseInt(document.getElementById('mileage').value);
+      let owners = parseInt(document.getElementById('owners').value);
+      let condition = document.getElementById('condition').value;
+      let fuel = document.getElementById('fuel').value;
+      let transmission = document.getElementById('transmission').value;
+      let brand = document.getElementById('brand').value;
+
+      // Step 1: Depreciation
+      let depreciationRates = [0.20, 0.15, 0.10];
+      let value = price;
+      for (let year = 1; year <= age; year++) {
+        if (year <= depreciationRates.length) {
+          value *= (1 - depreciationRates[year - 1]);
+        } else {
+          value *= (1 - 0.07);
+        }
+      }
+
+      // Step 2: Mileage Adjustment
+      let expectedMileage = age * 15000;
+      let mileageDiff = mileage - expectedMileage;
+      if (mileageDiff > 0) {
+        value *= (1 - (mileageDiff / 100000));
+      }
+
+      // Step 3: Ownership
+      let ownershipFactor = owners === 1 ? 1.0 : owners === 2 ? 0.9 : 0.8;
+      value *= ownershipFactor;
+
+      // Step 4: Condition
+      let conditionFactors = { "excellent": 1.0, "good": 0.9, "fair": 0.8, "poor": 0.7 };
+      value *= conditionFactors[condition];
+
+      // Step 5: Market Demand
+      let fuelFactors = { "petrol": 1.0, "diesel": 0.85, "electric": 1.1 };
+      let transmissionFactors = { "manual": 1.0, "automatic": 1.1 };
+      let brandFactors = { "popular": 1.05, "average": 1.0, "low": 0.9 };
+
+      value *= fuelFactors[fuel];
+      value *= transmissionFactors[transmission];
+      value *= brandFactors[brand];
+
+      document.getElementById('result').innerText = "Estimated Value: ₹" + Math.round(value).toLocaleString();
+    }
+  </script>
+</body>
+</html>
